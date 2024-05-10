@@ -4,7 +4,6 @@ const bookSchema   = new Schema({
     bookName : {
         type : String ,
         required : true ,
-
     },
     authorName :{
         type : Schema.Types.ObjectId ,
