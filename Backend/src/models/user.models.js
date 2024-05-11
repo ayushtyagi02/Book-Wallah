@@ -2,14 +2,12 @@ import mongoose , {Schema} from "mongoose";
 
 
 const userSchema  = new Schema({
-    username:{
+    userName:{
         type: String ,
         required : true ,
         lowercase : true ,
         unique : true ,
         trim : true ,
-
-
     },
     email:{
         type: String ,
@@ -22,19 +20,17 @@ const userSchema  = new Schema({
     firstName:{
         type: String ,
         required : true ,
-      
-
     },
     lastName:{
         type: String ,
         required : true ,
     },
-    book:{
+    book:[{
         type : Schema.Types.ObjectId ,
         ref : "Book"
-
-    },
+    }],
     profileImage:{
+        type: String
 
     },
     password:{
@@ -43,20 +39,21 @@ const userSchema  = new Schema({
 
 
     },
-    dateOfBirth:{
-        type : Date
+    
+    refreshToken:{
+        // string :true 
 
     },
-    refreshToken:{
-        string :true 
-
-    }
+    transactionRequests:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Transaction"
+        }
+    ]
 
 },
 {
     timestamps:true
 })
-
-
 
 export const User  = mongoose.model("User" , userSchema)
