@@ -1,1 +1,1 @@
-export const DB_NAME = "bookwallahdb"
+export const DB_NAME = "bookwallah"
