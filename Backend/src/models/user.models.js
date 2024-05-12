@@ -2,7 +2,7 @@ import mongoose , {Schema} from "mongoose";
 
 
 const userSchema  = new Schema({
-    userName:{
+    username:{
         type: String ,
         required : true ,
         lowercase : true ,
@@ -17,11 +17,11 @@ const userSchema  = new Schema({
         trim : true ,
 
     },
-    firstName:{
+    firstname:{
         type: String ,
         required : true ,
     },
-    lastName:{
+    lastname:{
         type: String ,
         required : true ,
     },
@@ -41,7 +41,7 @@ const userSchema  = new Schema({
     },
     
     refreshToken:{
-        // string :true 
+       type:String
 
     },
     transactionRequests:[
