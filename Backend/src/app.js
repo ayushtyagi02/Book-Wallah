@@ -1,20 +1,27 @@
 import express from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"
-import requests from './routes/requests.routes.js'
-import book from './routes/book.routes.js'
+
 const app  = express()
 
 app.use(cors({
-    origin : "" ,
+    origin : process.env.CORS_ORIGIN ,
     credentials:true
 }))
 
+
 app.use(express.json({limit:"16kb"}))
-app.use(express.urlencoded({extended:true , limit:"16kb"}))
+app.use(express.urlencoded({extended : true , limit : "16kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
-app.use('/api/v1',requests)
-app.use('/api/v1',book)
+import requestRouter from "./routes/requests.routes.js"
+import bookRouter from './routes/book.routes.js'
+
+app.use('/api/v1',requestRouter)
+app.use('/api/v1',bookRouter)
+
+import userRouter from "./routes/user.routes.js"
+
+app.use('/api/v1/user' , userRouter)
 
 export {app}
