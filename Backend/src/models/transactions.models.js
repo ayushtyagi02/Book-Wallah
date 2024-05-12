@@ -1,37 +1,35 @@
 import mongoose, { Schema } from "mongoose";
 
 const transactionSchema = new Schema({
-  name: {
+  lender: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  book: {
+  isExchanging:{
+    type: Boolean, 
+  },
+  isBorrowing:{
+    type: Boolean,
+  },
+  requestedbook: {
     type: Schema.Types.ObjectId,
     ref: "Book",
   },
-  currency: {
-    type: String,
-    required: true,
+  offeredbook: {
+    type: Schema.Types.ObjectId,
+    ref: "Book",
   },
   transactionDate: {
     type: Date,
-    required :true 
+    required :true,
+    default: Date.now()
   },
   transactionStatus: {
     type: String,
     required: true,
+    enum:["Requested","Accepted","Rejected"]
   },
-  transactionType: {
-    type: String,
-    required: true,
-  },
-  transactionAmount: {
-    type: Number,
-    required: true,
-  },
-  billingInfo :{
-    type :String 
-  }
+
 },{
     timestamps:true 
 });
