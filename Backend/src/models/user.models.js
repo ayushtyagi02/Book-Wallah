@@ -17,13 +17,10 @@ const userSchema  = new Schema({
         trim : true ,
 
     },
-    firstname:{
-        type: String ,
-        required : true ,
-    },
-    lastname:{
-        type: String ,
-        required : true ,
+    fullname:{
+        type:String,
+        required:true
+
     },
     book:[{
         type : Schema.Types.ObjectId ,
