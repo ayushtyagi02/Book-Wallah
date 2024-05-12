@@ -1,5 +1,6 @@
 import mongoose , {Schema} from "mongoose";
-
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
 
 const userSchema  = new Schema({
     username:{
@@ -17,10 +18,15 @@ const userSchema  = new Schema({
         trim : true ,
 
     },
-    fullname:{
-        type:String,
-        required:true
+    firstName:{
+        type: String ,
+        required : true ,
+      
 
+    },
+    lastName:{
+        type: String ,
+        required : true ,
     },
     book:[{
         type : Schema.Types.ObjectId ,
@@ -34,7 +40,10 @@ const userSchema  = new Schema({
         type: String,
         required: [true, 'Password is required']
     },
-    
+    dateOfBirth:{
+        type : Date
+
+    },
     refreshToken:{
       type: String
     },
@@ -49,5 +58,7 @@ const userSchema  = new Schema({
 {
     timestamps:true
 })
+
+
 
 export const User  = mongoose.model("User" , userSchema)
