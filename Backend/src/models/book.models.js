@@ -5,24 +5,31 @@ const bookSchema   = new Schema({
         type : String ,
         required : true ,
     },
-    authorName :{
+    ownerName :{
         type : Schema.Types.ObjectId ,
-        ref : "Author"
+        ref : "User"
     },
-    bookPrice :{
-        type : Number 
+    authorName:{
+        type:String,
+        required:true
     },
     description :{
         type : String ,
         required : true 
     },
-    coverImageofBook:{
+    coverImage:{
         type : String ,
         required : true  
     } ,
     publishDate :{
         type : Date ,
-        
+        default:Date.now() 
+    },
+    status:{
+        type: String,
+        required: true,
+        default:"Posted",
+        enum:["Process","Exchanged","Borrowed","Posted"]
     }
 
 
