@@ -71,6 +71,8 @@ const loginUser = asyncHandler(async(req, res)=>{
 
     const {email ,username , password} = req.body
 
+    console.log('Request Body:', req.body); 
+
     console.log(email)
     console.log(username)
 
