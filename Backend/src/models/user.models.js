@@ -8,44 +8,47 @@ const userSchema  = new Schema({
         required : true ,
         lowercase : true ,
         unique : true ,
-        trim : true 
+        trim : true ,
     },
     email:{
         type: String ,
         required : true ,
         lowercase : true ,
         unique : true ,
-        trim : true 
+        trim : true ,
+
     },
     fullname:{
         type: String ,
-        required : true 
+        required : true ,
     },
-    book:{
+    book:[{
         type : Schema.Types.ObjectId ,
         ref : "Book"
-
-    },
+    }],
     profileImage:{
-        type:String 
+        type: String
 
     },
     password:{
         type: String,
         required: [true, 'Password is required']
     },
-    dateOfBirth:{
-        type : Date
 
-    },
     refreshToken:{
-       type :  String
-    }
+      type: String
+    },
+    transactionRequests:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Transaction"
+        }
+    ]
+
 },
 {
     timestamps:true
 })
-
 
 userSchema.pre("save" ,async function(next){
     if (!this.isModified("password")) {
