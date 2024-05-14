@@ -17,12 +17,10 @@ app.use(express.static("public"))
 app.use(cookieParser())
 import requestRouter from "./routes/transaction.routes.js"
 import bookRouter from './routes/book.routes.js'
+import userRouter from "./routes/user.routes.js"
 
 app.use('/api/v1',requestRouter)
 app.use('/api/v1',bookRouter)
-
-import userRouter from "./routes/user.routes.js"
-
 app.use('/api/v1' , userRouter)
 
 export {app}
