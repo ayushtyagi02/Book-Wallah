@@ -277,4 +277,4 @@ const updateProfileImageDetails = asyncHandler(async(req,res)=>{
     )
 })
 
-export { registerUser, loginUser, logoutUser , changeCurrentPassword , getCurrentUser };
+export { registerUser, loginUser, logoutUser , changeCurrentPassword , getCurrentUser , updateAccountDetails , updateProfileImageDetails , refreshAccessToken };
