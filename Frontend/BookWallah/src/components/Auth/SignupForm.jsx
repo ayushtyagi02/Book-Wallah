@@ -35,7 +35,7 @@ const SignupForm = () => {
     }
 
     return (
-        <div className='w-[60%]'>
+        <div className='w-[50%]'>
 
             {/* Form */}
             <form onSubmit={handleOnSubmit} className="flex w-[80%] mx-auto flex-col gap-y-8 p-5 m-2">

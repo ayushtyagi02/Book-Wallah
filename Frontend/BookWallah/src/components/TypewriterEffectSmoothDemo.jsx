@@ -30,10 +30,10 @@ function TypewriterEffectSmoothDemo() {
       </p>
       <TypewriterEffectSmooth words={words} />
       <div className="flex flex-col md:flex-row w-[20rem] space-y-4 md:space-y-0 space-x-0 md:space-x-4">
-        <button onClick={()=>naviga} className="px-8 py-2 w-[70%] rounded-md bg-indigo-400 text-white font-bold transition duration-200 hover:bg-indigo-100 hover:text-black border-2 border-transparent hover:border-indigo-500">
+        <button onClick={()=>navigate('/signup')} className="px-8 py-2 w-[70%] rounded-md bg-indigo-400 text-white font-bold transition duration-200 hover:bg-indigo-100 hover:text-black border-2 border-transparent hover:border-indigo-500">
           Join Now
         </button>
-        <button className="px-4 py-2 w-[70%] rounded-md border border-black bg-white font-semibold text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
+        <button onClick={()=>navigate('/login')} className="px-4 py-2 w-[70%] rounded-md border border-black bg-white font-semibold text-black text-sm hover:shadow-[4px_4px_0px_0px_rgba(0,0,0)] transition duration-200">
           Sign In
         </button>
       </div>

@@ -1,34 +1,74 @@
 "use client";
 import { useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "../../utils/cn";
 import React from "react";
-import {dummydata} from "../../../data/books-data"
+import { dummydata } from "../../../data/books-data"
 import { PlaceholdersAndVanishInput } from "./placeholders-and-vanish-input";
+import toast from "react-hot-toast";
+import { IoFilter } from "react-icons/io5";
 export const ParallaxScroll = ({
-  
+
   className,
 }: {
-  images: string[];
+  displayData: string[];
   className?: string;
 }) => {
-  const images= dummydata
+  const subLinks = [
+    'Comedy',
+    'Horror',
+    'Suspense',
+    'Chemistry'
+  ]
+  const [searchedBook, setSearchedBook] = useState<string>("");
+  const [displayData, setDisplayData] = useState<Array<{ coverImage: string; bookName: string; authorName: string; }>>(dummydata);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchedBook(e.target.value);
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const filteredBooks = dummydata.filter(book =>
+      book.bookName.toLowerCase().includes(searchedBook.toLowerCase())
+    );
+    console.log(filteredBooks)
+    if (filteredBooks.length === 0) {
+      toast.error('No books found')
+      setDisplayData(dummydata)
+      return
+    }
+    setDisplayData(filteredBooks);
+  };
   const gridRef = useRef<any>(null);
   const { scrollYProgress } = useScroll({
     container: gridRef, // remove this if your container is not fixed height
     offset: ["start start", "end start"], // remove this if your container is not fixed height
   });
+  const genreHandler = (e: any) => {
+    const filteredBooks = dummydata.filter(book =>
+      book.genre.toLowerCase().includes(e.target.innerHTML.toLowerCase())
+    );
+    console.log(filteredBooks)
+    if (filteredBooks.length === 0) {
+      toast.error('No books found')
+      setDisplayData(dummydata)
+      return
+    }
+    setDisplayData(filteredBooks);
 
+
+  }
   const translateFirst = useTransform(scrollYProgress, [0, 1], [0, -200]);
   const translateSecond = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const translateThird = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
-  const third = Math.ceil(images.length / 3);
+  const third = Math.ceil(displayData.length / 3);
 
-  const firstPart = images.slice(0, third);
-  const secondPart = images.slice(third, 2 * third);
-  const thirdPart = images.slice(2 * third);
+  const firstPart = displayData.slice(0, third);
+  const secondPart = displayData.slice(third, 2 * third);
+  const thirdPart = displayData.slice(2 * third);
   const placeholders = [
     "What's the first rule of Fight Club?",
     "Who is Tyler Durden?",
@@ -37,25 +77,46 @@ export const ParallaxScroll = ({
     "How to assemble your own PC?",
   ];
 
-  const handleChange = (e) => {
-    console.log(e.target.value);
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log("submitted");
-  }
+
   return (
     <div
       className={cn("h-[100vh] items-start overflow-y-auto w-full", className)}
       ref={gridRef}
     >
-      <div className='h-[4rem] mt-10 items-center justify-center p-5'>
-            <PlaceholdersAndVanishInput
-            placeholders={placeholders}
-            onChange={handleChange}
-            onSubmit={onSubmit}
-            />
+      <div className='group relative flex items-center gap-2 '>
+        <div className='absolute right-20 top-4 flex rounded-sm px-4 py-2 hover:bg-indigo-200 font-semibold cursor-pointer items-center gap-3 text-lg'>
+          <p className=''> Filter</p>
+          <IoFilter />
         </div>
+
+        <div className='invisible absolute z-[100] right-12 top-12 flex w-[110px] flex-col rounded-lg bg-white p-4 text-black font-semibold opacity-0 transition-all duration-150 group-hover:visible group-hover:translate-y-[1.65em] group-hover:opacity-100 lg:w-[200px]'>
+
+          {
+            subLinks.length > 0 ?
+              subLinks.map((subLink, index) => (
+                <button className='rounded-lg bg-transparent py-4 hover:bg-slate-100'
+                  onClick={genreHandler}>
+
+                  {subLink}
+                </button>
+
+              ))
+              : (<div></div>)
+          }
+
+          <div className='absolute left-[50%] top-0 translate-x-[80%] translate-y-[-45%] h-6 w-6 rotate-45 rounded-md bg-richblack-5 '>
+
+          </div>
+        </div>
+
+      </div>
+      <div className='h-[4rem] mt-10 items-center justify-center p-5'>
+        <PlaceholdersAndVanishInput
+          placeholders={placeholders}
+          onChange={handleChange}
+          onSubmit={onSubmit}
+        />
+      </div>
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start  max-w-6xl mx-auto gap-10 py-20  px-10"
         ref={gridRef}

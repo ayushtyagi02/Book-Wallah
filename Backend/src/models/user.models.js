@@ -46,7 +46,11 @@ const userSchema  = new Schema({
             type:Schema.Types.ObjectId,
             ref:"Transaction"
         }
-    ]
+    ],
+    favouriteGenre:{
+        type: [String],
+        required:true
+    }
 
 },
 {

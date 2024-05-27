@@ -9,9 +9,9 @@ export const Navbar = () => {
     }
 
     return (
-        <div className='flex h-14 items-center justify-center  bg-indigo-100'>
+        <div className='flex h-14 relative items-center justify-center  bg-indigo-100'>
 
-            <div className='flex items-center justify-center w-11/12 max-w-maxContent'>
+            <div className='flex items-center absolute z-[100] justify-center w-11/12 max-w-maxContent'>
                 {/* <Link to={'/'}>
                     
                      <p>BookWallah</p>

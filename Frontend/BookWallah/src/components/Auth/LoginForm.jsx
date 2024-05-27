@@ -26,7 +26,7 @@ const LoginForm = () => {
     return (
         <form
           onSubmit={handleOnSubmit}
-          className="mt-6 flex w-[40%] flex-col gap-y-4 p-4 m-2"
+          className=" flex w-[40%] flex-col gap-y-4 "
         >
           <label className="w-full">
             <p className="mb-3 text-md font-semibold leading-[1.375rem]">
