@@ -23,3 +23,8 @@ Welcome to the Book Exchange and Borrow Website! This platform allows users to e
 - Messaging: Socket.io
 - Other Libraries: Bootstrap, Axios, etc.
 
+Frontend commands to run before getting started:
+react-router-dom
+npm i framer-motion clsx tailwind-merge
+
+
