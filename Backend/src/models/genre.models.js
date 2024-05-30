@@ -7,6 +7,7 @@ const genreSchema = new Schema ({
     },
     book:[{
         type: Schema.Types.ObjectId,
+        ref:"Book"
     }]
 })
 export const Genre = mongoose.model("Genre", genreSchema);

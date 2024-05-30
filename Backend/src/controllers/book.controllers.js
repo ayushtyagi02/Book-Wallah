@@ -1,7 +1,8 @@
 import { Book } from "../models/book.models.js"
 import { User } from "../models/user.models.js"
+import { asyncHandler } from "../utils/asyncHandler.js"
 
-const createBook = async (req,res)=>{
+const createBook = asyncHandler( async (req,res)=>{
     try {
         const {bookName, ownerName, description,coverImage,authorName}= req.body
         console.log(bookName, ownerName, description,coverImage,authorName,'hereeee')
@@ -30,7 +31,7 @@ const createBook = async (req,res)=>{
         })
         
     }
-}
+})
 export {
     createBook
 }
