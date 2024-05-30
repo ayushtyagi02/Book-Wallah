@@ -7,9 +7,11 @@ const transactionSchema = new Schema({
   },
   isExchanging:{
     type: Boolean, 
+    default: false
   },
   isBorrowing:{
     type: Boolean,
+    default:false
   },
   requestedbook: {
     type: Schema.Types.ObjectId,

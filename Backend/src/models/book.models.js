@@ -30,6 +30,11 @@ const bookSchema   = new Schema({
         required: true,
         default:"Posted",
         enum:["Process","Exchanged","Borrowed","Posted"]
+    },
+    genre:{
+        type:Schema.Types.ObjectId,
+        ref: "Genre",
+        required:true
     }
 
 
