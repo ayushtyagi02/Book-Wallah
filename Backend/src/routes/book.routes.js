@@ -1,15 +1,23 @@
 import { Router} from "express";
+import { upload } from "../middlewares/multer.middleware.js";
 import { createBook, deleteBook, updateBook, getBookById } from '../controllers/BookController';
 
 const router = Router();
 
 
-router.post('/books', createBook);
+router.route('/books').post(
+upload.field([
+    {
+        name:"coverImage",
+        maxCount:1,
+    }
+]),
+createBook);
 
-router.delete('/books/:id', deleteBook);
+router.route('/books/:id').delete( deleteBook);
 
-router.put('/books/:id', updateBook);
+router.route('/books/:id').put(updateBook);
 
-router.get('/books/:id', getBookById);
+router.route('/books/:id').get(getBookById);
 
 export default router
