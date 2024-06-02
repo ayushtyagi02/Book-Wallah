@@ -4,14 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "server": "cd .. && cd Backend && npm run dev",
+    "start": "vite",
+    "dev": "concurrently -n \"client,server\" -c \"bgBlue, bgcaribbeangreen\" \"npm start\" \"npm run server\"",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
+    "axios": "^1.7.2",
     "clsx": "^2.1.1",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
     "framer-motion": "^11.2.0",
     "next": "^14.2.3",
     "react": "^18.2.0",

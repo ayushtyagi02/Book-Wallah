@@ -1,10 +1,11 @@
 import { Router} from "express";
-import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateProfileImageDetails } from "../controllers/user.controller.js";
+import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateProfileImageDetails,sendOtp } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 
+router.route("/sendOtp").post(sendOtp)
 router.route("/register").post(
     upload.fields([
         {
