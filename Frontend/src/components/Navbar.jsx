@@ -1,5 +1,7 @@
 import { Link, matchPath, useLocation } from "react-router-dom"
 import { NavbarLinks } from "../data/NavbarLinks"
+import ProfileDropdown from "./Auth/ProfileDropdown";
+import { useSelector } from "react-redux";
 
 export const Navbar = () => {
 
@@ -7,11 +9,12 @@ export const Navbar = () => {
     function matchRoute(route){
         return matchPath(route,location.pathname)
     }
+    const {token} = useSelector((state)=>state.auth)
 
     return (
-        <div className='flex h-14 relative items-center justify-center  bg-indigo-100'>
+        <div className='flex h-14 items-center justify-center  bg-indigo-100  '>
 
-            <div className='flex items-center absolute z-[100] justify-center w-11/12 max-w-maxContent'>
+            <div className='flex flex-row  fixed bg-indigo-100 z-[100] justify-center items-center w-11/12 h-[4rem]'>
                 {/* <Link to={'/'}>
                     
                      <p>BookWallah</p>
@@ -66,43 +69,14 @@ export const Navbar = () => {
                     </ul>
                 </nav>
                 {/* login and signupp */}
-                {/* <div className="hidden items-center gap-x-4 md:flex">
-                    {/* {
-                        user && user?.accountType !== "Instructor" && (
-                            <Link to={'/dashboard/cart'} className='relative text-white flex'>
-                                <AiOutlineShopping className='text-3xl' />
-                                {
-                                    totalItems > 0 && (
-                                        <span className='absolute text-[12px] -right-2 text-center bg-white rounded-full w-5 text-richblack-900'>{totalItems}</span>
-                                    )
-                                }
-                            </Link>
-                        )
-                    }
-                    {
-                        token == null && (
-                            <Link className='border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md' to={'/login'}>
-                                <button>Log in</button>
-
-                            </Link>
-                        )
-                    }
-                    {
-                        token == null && (
-                            <Link className='border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md' to={'/signup'}>
-                                <button>Signup</button>
-
-                            </Link>
-                        )
-                    }
+                <div className="right-20 items-center justify-center flex absolute">                    
                     {
 
-                        token !== null && (<ProfileDropDown />)
+                        token !== null && (<ProfileDropdown />)
                     } 
 
-                </div> */}
+                </div> 
             </div>
         </div>
     )
 }
-

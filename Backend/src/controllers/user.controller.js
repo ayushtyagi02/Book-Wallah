@@ -73,8 +73,8 @@ const sendOtp = async (req, res) => {
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { fullname, email, username, password, otp } = req.body;
-
+  const { fullname, email, username, password,favouriteGenre, otp } = req.body;
+  console.log(username)
   if (
     [fullname, email, username, password].some((field) => field?.trim() === "")
   ) {
@@ -122,6 +122,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     username: username.toLowerCase(),
+    favouriteGenre
   });
 
   const createdUser = await User.findById(user._id).select(
@@ -260,7 +261,6 @@ const refreshAccessToken = asyncHandler(async (res, req) => {
     throw new ApiError(401, error?.message || "Invalid refresh token");
   }
 });
-
 
 const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { oldPassowrd, newPassword } = req.body
