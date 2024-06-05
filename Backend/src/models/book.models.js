@@ -35,7 +35,13 @@ const bookSchema   = new Schema({
         type:Schema.Types.ObjectId,
         ref: "Genre",
         required:true
+    },
+    borrowedAt:{
+        type:Date,
+        expires:5*60*1000,
     }
+
+
 
 
 } ,{

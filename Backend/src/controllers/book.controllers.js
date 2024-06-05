@@ -118,7 +118,7 @@ const updateBook = asyncHandler(async (req, res) => {
 
 
   return res.status(200)
-  .json(new ApiResponse(200 , updateBook , "Book updated succesfully"))
+  .json(new ApiResponse(200 , updatedBook , "Book updated succesfully"))
 });
 
 const getBookByItsID = asyncHandler(async (req, res) => {
@@ -137,4 +137,4 @@ return res.status(200)
 
 const getAllBooks = asyncHandler(async (req, res) => {});
 
-export { createBook };
+export { createBook, deleteBook , updateBook, getBookByItsID, getAllBooks };

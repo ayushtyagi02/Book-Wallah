@@ -3,6 +3,8 @@ import { ApiError } from "../utils/apiError.js";
 import { User } from "../models/user.models.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/apiResponses.js";
+import {OTP} from "../models/otp.models.js";
+import otpGenerator from "otp-generator"
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -20,9 +22,58 @@ const generateAccessAndRefreshToken = async (userId) => {
     );
   }
 };
+const sendOtp = async (req, res) => {
+  try {
+      const { email } = req.body;
+
+      //check if user already exists
+      const checkUserPresent = await User.findOne({ email: email })
+
+      if (checkUserPresent) {
+          return res.status(401).json({
+              success: false,
+              message: 'User already exists'
+          })
+      }
+      var otp = otpGenerator.generate(6, {
+          upperCaseAlphabets: false,
+          lowerCaseAlphabets: false,
+          specialChars: false
+      })
+      console.log("OTP generated successfully: ", otp);
+
+      //check if it is unique or not 
+      const result = await OTP.findOne({ otp: otp });
+
+      while (result) {
+          otp = otpGenerator.generate(6, {
+              upperCaseAlphabets: false,
+              lowerCaseAlphabets: false,
+              specialChars: false
+          })
+           result=await OTP.findOne({ otp: otp });
+      }
+      //create an entry for OTP
+      const otpPayload = { email, otp }
+      const otpBody = await OTP.create(otpPayload)
+   //return response 
+      res.status(200).json({
+          success: true,
+          message: 'OTP sent successfully',
+          otpBody
+      })
+  }
+  catch (e) {
+      console.log(e),
+          res.status(500).json({
+              success: false,
+              message: e.message
+          })
+  }
+}
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { fullname, email, username, password } = req.body;
+  const { fullname, email, username, password, otp } = req.body;
 
   if (
     [fullname, email, username, password].some((field) => field?.trim() === "")
@@ -47,6 +98,23 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const profileImage = await uploadOnCloudinary(profileImageLocalPath);
+
+  const recentOtp = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+  console.log(recentOtp[0].otp)
+  //validate otp
+  if (recentOtp.length == 0) {
+    return res.status(400).json({
+      success: false,
+      message: "OTP not found"
+    });
+
+  }
+  else if (otp !== recentOtp[0].otp) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid OTP"
+    });
+  }
 
   const user = await User.create({
     fullname,
@@ -194,87 +262,87 @@ const refreshAccessToken = asyncHandler(async (res, req) => {
 });
 
 
-const changeCurrentPassword  = asyncHandler(async(req,res)=>{
-    const {oldPassowrd , newPassword} = req.body
+const changeCurrentPassword = asyncHandler(async (req, res) => {
+  const { oldPassowrd, newPassword } = req.body
 
-    const user  = await User.findById(req.user?._id)
+  const user = await User.findById(req.user?._id)
 
-    const isPassowrdCorrect  = await user.isPassowrdCorrect(oldPassowrd)
+  const isPassowrdCorrect = await user.isPassowrdCorrect(oldPassowrd)
 
 
-    if (!isPassowrdCorrect) {
-        throw new ApiError(400 , "Invalid Old Password !")
-    }
+  if (!isPassowrdCorrect) {
+    throw new ApiError(400, "Invalid Old Password !")
+  }
 
-    user.password = new password 
+  user.password = new password
 
-    await user.save({validateBeforeSave : false})
+  await user.save({ validateBeforeSave: false })
 
-    return res
+  return res
     .status(200)
-    .json(new ApiResponse(200 , {} , "Password Changed successfully !"))
+    .json(new ApiResponse(200, {}, "Password Changed successfully !"))
 })
 
-const getCurrentUser = asyncHandler(async(req,res)=>{
-    return res
+const getCurrentUser = asyncHandler(async (req, res) => {
+  return res
     .status(200)
     .json(new ApiResponse(
-        200 , req.user ,"User Fetched Successfully!"
+      200, req.user, "User Fetched Successfully!"
     ))
 })
 
 
-const updateAccountDetails = asyncHandler(async(req,res)=>{
-    const {fullname , email} = req.body 
+const updateAccountDetails = asyncHandler(async (req, res) => {
+  const { fullname, email } = req.body
 
-    if (!fullname || !email) {
-        throw new ApiError(400 , "All fields are required !")
-    }
+  if (!fullname || !email) {
+    throw new ApiError(400, "All fields are required !")
+  }
 
-    const user  = await User.findByIdAndUpdate(
-        req.user?._id,
-        {
-            $set:{
-                fullname ,
-                email: email
-            }
-        },
-        {new:true}
-    ).select("-password")
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      $set: {
+        fullname,
+        email: email
+      }
+    },
+    { new: true }
+  ).select("-password")
 
 
-    return res
+  return res
     .status(200)
-    .json(new ApiResponse(200 , user , "Account details updated successfully"))
+    .json(new ApiResponse(200, user, "Account details updated successfully"))
 })
 
-const updateProfileImageDetails = asyncHandler(async(req,res)=>{
-    const profileImageLocalPath = req.file?.path
+const updateProfileImageDetails = asyncHandler(async (req, res) => {
+  const profileImageLocalPath = req.file?.path
 
-    if (!profileImageLocalPath) {
-        throw new ApiError(400 , "Profile Image file is missing!")
+  if (!profileImageLocalPath) {
+    throw new ApiError(400, "Profile Image file is missing!")
+  }
+
+  const profileImage = await uploadOnCloudinary(profileImageLocalPath)
+
+  if (!profileImage.url) {
+    throw new ApiError(400, "Error while uploading on profile image")
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user?._id, {
+    $set: {
+      profileImage: profileImage.url
     }
+  },
+    { new: true }
+  ).select("-password")
 
-    const profileImage = await uploadOnCloudinary(profileImageLocalPath)
-
-    if (!profileImage.url) {
-        throw new ApiError(400 , "Error while uploading on profile image")
-    }
-
-    const user  = await User.findByIdAndUpdate(
-        req.user?._id,{
-            $set:{
-                profileImage:profileImage.url
-            }
-        },
-        {new:true}
-    ).select("-password")
-
-    return res
+  return res
     .status(200)
     .json(
-        new ApiResponse(200 , user ,"Profile Image updated successfully !")
+      new ApiResponse(200, user, "Profile Image updated successfully !")
     )
 })
 
-export { registerUser, loginUser, logoutUser , changeCurrentPassword , getCurrentUser , updateAccountDetails , updateProfileImageDetails , refreshAccessToken };
+export { registerUser, loginUser, logoutUser, changeCurrentPassword, getCurrentUser, updateAccountDetails, updateProfileImageDetails, refreshAccessToken, sendOtp };
