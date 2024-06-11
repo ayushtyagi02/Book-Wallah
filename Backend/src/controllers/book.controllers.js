@@ -4,29 +4,27 @@ import { Genre } from "../models/genre.models.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponses.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const createBook = asyncHandler(async (req, res) => {
-  const { bookName, ownerName, description, coverImage, authorName, genre } =
-    req.body;
-  console.log(
-    bookName,
-    ownerName,
-    description,
-    coverImage,
-    authorName,
-    "hereeee"
-  );
+  const { bookName, ownerName, description, authorName, genre } = req.body;
+  console.log(bookName, ownerName, description, authorName, "hereeee");
 
   //validate
-  if (
-    !bookName ||
-    !ownerName ||
-    !description ||
-    !coverImage ||
-    !authorName ||
-    !genre
-  ) {
+  if (!bookName || !ownerName || !description || !authorName || !genre) {
     throw new ApiError(400, "All Fields are required!");
+  }
+
+  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+  if (!coverImageLocalPath) {
+    throw new ApiError(400, "Cover Image required!");
+  }
+
+  const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
+  if (!coverImage) {
+    throw new ApiError(400, "Cover Image required!");
   }
 
   const owner = await User.findOne(ownerName);
@@ -35,7 +33,6 @@ const createBook = asyncHandler(async (req, res) => {
   }
 
   let existingGenre = await Genre.findOne(genreName);
-
   if (!existingGenre) {
     const newGenre = new Genre(genreName);
     const existingGenre = await newGenre.save();
@@ -113,28 +110,28 @@ const updateBook = asyncHandler(async (req, res) => {
   );
 
   if (!updatedBook) {
-   throw new ApiError(200 , "Book not found" );
+    throw new ApiError(200, "Book not found");
   }
 
-
-  return res.status(200)
-  .json(new ApiResponse(200 , updatedBook , "Book updated succesfully"))
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedBook, "Book updated succesfully"));
 });
 
 const getBookByItsID = asyncHandler(async (req, res) => {
-const {id} = req.params
+  const { id } = req.params;
 
-const book = await Book.findById(id)
+  const book = await Book.findById(id);
 
-if (!book) {
-  throw new ApiError(400 , "Book not found!")
-}
+  if (!book) {
+    throw new ApiError(400, "Book not found!");
+  }
 
-return res.status(200)
-.json(new ApiResponse(200 , book , "Book fetched successfully!"))
-
+  return res
+    .status(200)
+    .json(new ApiResponse(200, book, "Book fetched successfully!"));
 });
 
 const getAllBooks = asyncHandler(async (req, res) => {});
 
-export { createBook, deleteBook , updateBook, getBookByItsID, getAllBooks };
+export { createBook, deleteBook, updateBook, getBookByItsID, getAllBooks };
