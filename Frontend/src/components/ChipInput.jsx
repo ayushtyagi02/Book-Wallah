@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import {MdClose} from 'react-icons/md'
-const ChipInput = ({name,placeholder,favouriteGenre, setFavouriteGenre}) => {
+const ChipInput = ({name,placeholder,setValue, errors, register}) => {
     const [genre,setGenre]=useState("")
+    const [favouriteGenre, setFavouriteGenre] = useState([])
     function changeHandler(e){
         e.preventDefault()
         if(genre && !favouriteGenre.includes(genre)){
-            setTags([...favouriteGenre,genre])
+            setFavouriteGenre([...favouriteGenre,genre])
             setGenre("")
             
         }        
@@ -25,9 +26,9 @@ const ChipInput = ({name,placeholder,favouriteGenre, setFavouriteGenre}) => {
 
     <div>
         <label>
-            <span>{label}<sup className='text-pink-200'>*</sup></span>
+            <span>Cover Image<sup className='text-pink-200'>*</sup></span>
             {
-                 favouriteGenre.length > 0 && (
+                 favouriteGenre?.length > 0 && (
                        <ul className='flex w-full flex-wrap gap-y-2'>
                         
                                 {

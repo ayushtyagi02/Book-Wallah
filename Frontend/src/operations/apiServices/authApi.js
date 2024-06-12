@@ -66,7 +66,7 @@ export function login(email,password,navigate){
           ? response.data.data.user.profileImage
           : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.user.fullname} ${response.data.data.user.fullname}`
         dispatch(setUser({ ...response.data.data.user, profileImage: profileImage }))
-        
+        console.log(response.data.data.refreshToken)
         localStorage.setItem("token", JSON.stringify(response.data.data.accessToken))
         localStorage.setItem("user", JSON.stringify(response.data.data.user))
       }
