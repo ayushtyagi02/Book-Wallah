@@ -7,32 +7,32 @@ const MyProfile = () => {
 
     return (
         <>
-            <div className='flex mx-auto items-center justify-center mt-10 bg-indigo-300 p-5 rounded-lg'>
-                <div className='flex flex-col gap-y-6 w-8/12 justify-center items-center'>
+            <div className='flex flex-col lg:flex-row mx-auto items-center justify-center mt-10 bg-indigo-300 p-5 rounded-lg'>
+                <div className='flex flex-col gap-y-6 lg:w-4/12 w-full justify-center items-center'>
                     <img
                         src={user?.profileImage}
                         alt={`profile-${user?.fullname}`}
-                        className="aspect-square w-1/3 rounded-full object-cover"
+                        className="aspect-square w-2/3 md:w-1/3 rounded-full object-cover"
                     />
                     <div>
-                        <p className='text-lg font-semibold '>{user?.fullname}</p>
+                        <p className='text-lg font-semibold'>{user?.fullname}</p>
                     </div>
                 </div>
-                <div className='flex space-x-20 w-11/12 p-5'>
+                <div className='flex flex-col lg:flex-row space-x-0 lg:space-x-20 w-full lg:w-8/12 p-5'>
 
-                    <div>
-                        <div className='flex gap-x-7'>
+                    <div className='w-full'>
+                        <div className='flex gap-x-7 justify-between items-center'>
                             <p className='text-lg font-semibold my-4'>Personal Details</p>
                             <button
                                 onClick={() => {
                                     // navigate("/dashboard/settings")
                                 }}
                             >
-                                <RiEditBoxLine />
+                                <RiEditBoxLine className="text-xl" />
                             </button>
                         </div>
                         <div>
-                            <div className='grid grid-cols-2 gap-y-4 gap-x-48 items-center'>
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-10 md:gap-x-48 items-center'>
                                 <div>
                                     <p className='text-md opacity-60'>Name</p>
                                     <p className='text-xl py-3 font-semibold font-mono'>{user?.fullname}</p>
@@ -68,15 +68,14 @@ const MyProfile = () => {
                                 onClick={() => {
                                     navigate("/dashboard/settings");
                                 }}
+                                className="flex items-center text-xl mt-4"
                             >
-                                <RiEditBoxLine /> Edit
+                                <RiEditBoxLine className="mr-2" /> Edit
                             </button>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </>
     );
 }

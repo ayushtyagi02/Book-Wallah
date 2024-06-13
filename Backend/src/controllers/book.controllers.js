@@ -27,22 +27,23 @@ const createBook = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Cover Image required!");
   }
 
-  const owner = await User.findOne(ownerName);
+  const owner = await User.findById(ownerName);
   if (!owner) {
     throw new ApiError(400, "Owner does not exist !");
   }
-
-  let existingGenre = await Genre.findOne(genreName);
+  console.log(typeof(genre))
+  let existingGenre = await Genre.findOne({genreName:genre});
+  console.log(existingGenre)
   if (!existingGenre) {
-    const newGenre = new Genre(genreName);
+    const newGenre = new Genre({genreName:genre});
     const existingGenre = await newGenre.save();
   }
-
+  console.log('yaha')
   const newBook = await Book.create({
     bookName,
     ownerName,
     description,
-    coverImage,
+    coverImage: coverImage?.url || "",
     authorName,
     genre: existingGenre,
   });
