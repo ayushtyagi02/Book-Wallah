@@ -49,7 +49,7 @@ const userSchema  = new Schema({
     ],
     favouriteGenre:{
         type: [String],
-        required:true
+        // required:true
     }
 
 },
