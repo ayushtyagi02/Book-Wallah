@@ -3,6 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../../operations/apiServices/authApi'
 import { useDispatch } from 'react-redux'
+import toast from 'react-hot-toast'
 const LoginForm = () => {
     const [formData, setFormData] = useState({
         username: "",
@@ -25,6 +26,7 @@ const LoginForm = () => {
       const handleOnSubmit = (e) => {
         e.preventDefault()
         console.log(username,password)
+        
         dispatch(login(username, password, navigate))
       }
     return (

@@ -15,12 +15,14 @@ import Dashboard from './pages/Dashboard'
 import PostedBooks from './components/Profile/PostedBooks'
 import BorrowedBooks from './components/Profile/BorrowedBooks'
 import PrivateRoute from './components/Auth/PrivateRoute'
+import {VerifyEmail} from './pages/VerifyEmail'
+import AddBook from './components/Book/AddBook'
 function App() {
 
   return (
     <>
 
-      <div className='bg-indigo-100'>
+      <div className='w-scren min-h-screen flex flex-col font-inter bg-indigo-100'>
         <Navbar />
 
         <Routes>
@@ -30,10 +32,14 @@ function App() {
           <Route path='/login' element={<OpenRoute><LoginPage /></OpenRoute>} />
           <Route path='/contact' element={<ContactPage />} />
           <Route path='/explore-books' element={<DisplayBooks />} />
-          <Route element={<Dashboard />}>
+          <Route path="/verify-otp" element={<OpenRoute><VerifyEmail/></OpenRoute>}/>
+
+
+          <Route element={<PrivateRoute><Dashboard /></PrivateRoute>}>
             <Route path="/dashboard/user-books" element={<PostedBooks />} />
             <Route path="/dashboard/borrowed-books" element={<BorrowedBooks />} />
           </Route>
+          <Route path='/post-book' element={<PrivateRoute><AddBook/></PrivateRoute>}/>
         </Routes>
       </div>
     </>
