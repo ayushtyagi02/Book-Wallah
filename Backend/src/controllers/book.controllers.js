@@ -31,21 +31,21 @@ const createBook = asyncHandler(async (req, res) => {
   if (!owner) {
     throw new ApiError(400, "Owner does not exist !");
   }
-  console.log(typeof(genre))
+  console.log(genre)
   let existingGenre = await Genre.findOne({genreName:genre});
   console.log(existingGenre)
   if (!existingGenre) {
     const newGenre = new Genre({genreName:genre});
     const existingGenre = await newGenre.save();
   }
-  console.log('yaha')
+  console.log(existingGenre)
   const newBook = await Book.create({
     bookName,
     ownerName,
     description,
     coverImage: coverImage?.url || "",
     authorName,
-    genre: existingGenre,
+    genre: existingGenre._id,
   });
 
   await newBook.save();

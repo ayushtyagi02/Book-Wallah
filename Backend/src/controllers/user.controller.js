@@ -73,14 +73,8 @@ const sendOtp = async (req, res) => {
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-<<<<<<< HEAD
-  const { fullname, email, username, password, otp } = req.body;
-  console.log(otp)
-
-=======
   const { fullname, email, username, password,favouriteGenre, otp } = req.body;
   console.log(username)
->>>>>>> 241807d57adb0520052a9d966571c7529c04d528
   if (
     [fullname, email, username, password].some((field) => field?.trim() === "")
   ) {
