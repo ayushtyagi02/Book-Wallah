@@ -65,6 +65,7 @@ const createBook = asyncHandler(async (req, res) => {
     coverImage: coverImage?.url || "",
     authorName,
     genre: genreIds,
+
   });
 
   await newBook.save();

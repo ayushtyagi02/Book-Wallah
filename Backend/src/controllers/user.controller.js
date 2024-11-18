@@ -100,7 +100,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const profileImage = await uploadOnCloudinary(profileImageLocalPath);
 
   const recentOtp = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-  console.log(recentOtp[0].otp)
+  console.log(recentOtp)
   //validate otp
   if (recentOtp.length == 0) {
     return res.status(400).json({
